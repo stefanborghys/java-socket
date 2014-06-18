@@ -11,6 +11,11 @@ import org.junit.rules.ExpectedException;
 
 import be.seriousbusiness.java.socket.handler.factory.client.StringClientSocketHandlerFactory;
 
+/**
+ * Simple SocketServer test.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ */
 public class SocketServerTest {
 	
 	@Rule

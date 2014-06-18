@@ -4,7 +4,8 @@ package be.seriousbusiness.java.socket.server;
  * When started accessible from a fixed address (host and port).</br>
  * Serving incoming client requests 
  * @author seriousbusiness
- *
+ * @author Stefan Borghys
+ * 
  */
 public interface Server extends Runnable {
 	/**

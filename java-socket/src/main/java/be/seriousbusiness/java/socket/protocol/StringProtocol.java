@@ -3,6 +3,12 @@ package be.seriousbusiness.java.socket.protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Simple Protocol implementation using String messages to communicate between Server and Client.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ * 
+ */
 public class StringProtocol implements Protocol<String> {
 	private static final Logger LOGGER=LoggerFactory.getLogger(StringProtocol.class);
 	private static final String HELLO="HELLO",

@@ -12,6 +12,12 @@ import be.seriousbusiness.java.socket.handler.factory.SocketHandlerFactory;
 import be.seriousbusiness.java.socket.handler.factory.client.StringClientSocketHandlerFactory;
 import be.seriousbusiness.java.socket.network.Port;
 
+/**
+ * Basic Socket Server implementation.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ * 
+ */
 public class SocketServer extends Thread implements Server {
 	private static final Logger LOGGER=LoggerFactory.getLogger(SocketServer.class);
 	private final int port;
