@@ -12,6 +12,12 @@ import be.seriousbusiness.java.socket.handler.factory.SocketHandlerFactory;
 import be.seriousbusiness.java.socket.handler.factory.server.StringServerSocketHandlerFactory;
 import be.seriousbusiness.java.socket.network.Port;
 
+/**
+ * Simple Socket Client implementation.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ * 
+ */
 public class SocketClient extends Thread implements Client {
 	private static final Logger LOGGER=LoggerFactory.getLogger(SocketClient.class);
 	private final int serverPort;
@@ -20,18 +26,23 @@ public class SocketClient extends Thread implements Client {
 	private String clientHost;
 	private final SocketHandlerFactory<?> socketHandlerFactory;
 	
+	/**
+	 * Create a new SocketClient connecting to a running Server with host and port.
+	 * @param serverHost the server host
+	 * @param serverPort the server port number
+	 * @param socketHandlerFactory
+	 * @throws IllegalArgumentException when the port number is not between or equal to 0 and 65535.</br>
+	 * When the host is <code>null</code> or empty or when the SocketHandlerFactory is <code>null</code>.
+	 */
 	public <C extends Handler> SocketClient(final String serverHost,final int serverPort,final SocketHandlerFactory<C> socketHandlerFactory) throws IllegalArgumentException{
-		if(Port.isValid(serverPort)){
-			this.serverPort=serverPort;
-		}else{
+		if(!Port.isValid(serverPort)){
 			throw new IllegalArgumentException("Invalid server port number");
-		}
-		if(serverHost==null || serverHost.isEmpty()){
+		}else if(serverHost==null || serverHost.isEmpty()){
 			throw new IllegalArgumentException("The server host is null or empty");
-		}
-		if(socketHandlerFactory==null){
+		}else if(socketHandlerFactory==null){
 			throw new IllegalArgumentException("SocketHandlerFactory is null");
 		}
+		this.serverPort=serverPort;
 		this.socketHandlerFactory=socketHandlerFactory;
 		this.serverHost=serverHost;
 	}

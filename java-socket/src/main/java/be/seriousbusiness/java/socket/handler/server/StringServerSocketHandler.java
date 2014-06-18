@@ -9,10 +9,16 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import be.seriousbusiness.java.socket.handler.AbstractBaseHandler;
+import be.seriousbusiness.java.socket.handler.AbstractSocketHandler;
 import be.seriousbusiness.java.socket.protocol.Protocol;
 
-public class StringServerSocketHandler extends AbstractBaseHandler<String> {
+/**
+ * Implements a Handler specific for the use of a Server using Sockets and Strings as the message type.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ * 
+ */
+public class StringServerSocketHandler extends AbstractSocketHandler<String> {
 private static final Logger LOGGER=LoggerFactory.getLogger(StringServerSocketHandler.class);
 	
 	public StringServerSocketHandler(final Socket socket,final Protocol<String> protocol) throws IllegalArgumentException{

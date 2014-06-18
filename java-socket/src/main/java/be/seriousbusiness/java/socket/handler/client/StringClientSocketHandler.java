@@ -9,13 +9,24 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import be.seriousbusiness.java.socket.handler.AbstractBaseHandler;
+import be.seriousbusiness.java.socket.handler.AbstractSocketHandler;
 import be.seriousbusiness.java.socket.protocol.Protocol;
 
-
-public class StringClientSocketHandler extends AbstractBaseHandler<String> {
+/**
+ * Implements a Handler specific for the use of a Client using Sockets and Strings as the message type.
+ * @author seriousbusiness
+ * @author Stefan Borghys
+ * 
+ */
+public class StringClientSocketHandler extends AbstractSocketHandler<String> {
 	private static final Logger LOGGER=LoggerFactory.getLogger(StringClientSocketHandler.class);
 	
+	/**
+	 * Create a new StringClientSocketHandler.
+	 * @param socket
+	 * @param protocol
+	 * @throws IllegalArgumentException when the socket or protocol is <code>null</code>
+	 */
 	public StringClientSocketHandler(final Socket socket,final Protocol<String> protocol) throws IllegalArgumentException{
 		super(socket,protocol);
 	}
