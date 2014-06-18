@@ -1,6 +1,7 @@
 package be.seriousbusiness.java.socket.server;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -79,9 +80,15 @@ public class SocketServer extends Thread implements Server {
 					}
 				}
 			}
+		} catch (final BindException e){
+			LOGGER.error("Server could not be started",e);
+			interrupt();
+			throw new ServerException("The server could not be started");
 		} catch (final IOException e) {
 			LOGGER.error("Server {} could not be started",this,e);
-		} 
+			interrupt();
+			throw new ServerException("The server could not be started");
+		}
 	}
 	
 	@Override
@@ -89,9 +96,47 @@ public class SocketServer extends Thread implements Server {
 		return getHost() + ":" + port;
 	}
 	
-	public static void main(final String[] args){
-		final SocketServer socketServer=new SocketServer(3333,new StringClientSocketHandlerFactory());
-		socketServer.start();
+	/**
+	 * Start a SocketServer using String messages to communicate.
+	 * @param args the port number can be added as parameter but this is not mandatory
+	 * @throws InterruptedException
+	 */
+	public static void main(final String[] args) throws InterruptedException{
+		int port=-1;
+		if(args.length>=1){
+			try{
+				port=Integer.valueOf(args[0]);
+				if(!Port.isValid(port)){
+					LOGGER.error("The port number is not a valid number between 0 and 65535");
+					return;
+				}
+			}catch(final NumberFormatException e){
+				LOGGER.error("The port is not a number");
+				return;
+			}
+		}
+		if(port==-1){
+			boolean running=false;
+			port=Port.MINIMUM;
+			while(!running && port<Port.MAXIMUM){
+				try{
+					final SocketServer socketServer=new SocketServer(port,new StringClientSocketHandlerFactory());
+					socketServer.start();
+					Thread.sleep(2000);
+					running=true;
+				}catch(final ServerException e){
+					running=false;
+					port++;
+				}
+			}
+		}else{
+			try{
+				final SocketServer socketServer=new SocketServer(port,new StringClientSocketHandlerFactory());
+				socketServer.start();
+			}catch(final ServerException e){
+				LOGGER.error("The server could not be started on port {}",port);
+			}
+		}
 	}
 
 }

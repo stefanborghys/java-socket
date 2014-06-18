@@ -22,7 +22,7 @@ public class SocketClient extends Thread implements Client {
 	private static final Logger LOGGER=LoggerFactory.getLogger(SocketClient.class);
 	private final int serverPort;
 	private int clientPort;
-	private String serverHost;
+	private final String serverHost;
 	private String clientHost;
 	private final SocketHandlerFactory<?> socketHandlerFactory;
 	
@@ -77,9 +77,27 @@ public class SocketClient extends Thread implements Client {
 		return serverHost + ":" + serverPort;
 	}
 	
+	/**
+	 * Start a SocketClient using String messages to communicate.
+	 * @param args the host and port number are mandatory
+	 */
 	public static void main(final String[] args){
-		SocketClient socketClient=new SocketClient("0.0.0.0",3333,new StringServerSocketHandlerFactory());
-		socketClient.start();
+		if(args.length>=2){
+			String host=args[0];
+			int port=0;
+			try{
+				port=Integer.valueOf(args[1]);
+				if(!Port.isValid(port)){
+					LOGGER.error("The port number is not a valid number between 0 and 65535");
+					return;
+				}
+			}catch(final NumberFormatException e){
+				LOGGER.error("The port is not a number");
+				return;
+			}
+			SocketClient socketClient=new SocketClient(host,port,new StringServerSocketHandlerFactory());
+			socketClient.start();
+		}
 	}
 
 }
