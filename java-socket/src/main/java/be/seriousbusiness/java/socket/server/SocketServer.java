@@ -18,15 +18,22 @@ public class SocketServer extends Thread implements Server {
 	private final SocketHandlerFactory<?> socketHandlerFactory;
 	private String host;
 	
-	public <C extends Handler> SocketServer(final int port,final SocketHandlerFactory<C> socketHandlerFactory){
-		if(Port.isValid(port)){
-			this.port=port;
-		}else{
+	/**
+	 * Creates a new Server using sockets to communicate.</br>
+	 * </br>
+	 * @param port a number between or including 0 and 65535.</br>
+	 * Not used by any other application.
+	 * @param socketHandlerFactory
+	 * @throws IllegalArgumentException when the port is not between 0 and 65535</br>
+	 * or when the sockketHandlerFactory is null.
+	 */
+	public <C extends Handler> SocketServer(final int port,final SocketHandlerFactory<C> socketHandlerFactory) throws IllegalArgumentException{
+		if(!Port.isValid(port)){
 			throw new IllegalArgumentException("Invalid port number");
-		}
-		if(socketHandlerFactory==null){
+		}else if(socketHandlerFactory==null){
 			throw new IllegalArgumentException("SocketHandlerFactory is null");
 		}
+		this.port=port;
 		this.socketHandlerFactory=socketHandlerFactory;
 	}
 
@@ -40,6 +47,9 @@ public class SocketServer extends Thread implements Server {
 		return host==null ? "" : host;
 	}
 
+	/**
+	 * Creates a new ServerSocket using the specified port number.
+	 */
 	@Override
 	public void run() {
 		try {
